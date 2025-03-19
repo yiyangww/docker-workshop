@@ -7,23 +7,43 @@ export default function Home() {
   const questions = [
     {
       id: 1,
-      text: "What is Docker?",
-      options: ["A. docker is dockr", "B. docker ok", "C. idk", "D. good"],
+      text: "1. What is a container?",
+      options: [
+        "A. A special method of designing more efficient code",
+        "B. A digital platform designed to store files developed in different operating systems",
+        "C. A standard unit of software that packages code and all its dependencies",
+        "D. A data center server that stores cloud files",
+      ],
     },
     {
       id: 2,
-      text: "Why use Docker?",
-      options: ["A. Easy", "B. Portable", "C. Fast", "D. All of the above"],
+      text: "2. What are some of the traits of containers?",
+      options: [
+        "A. Containers save both time and money at the expense of utilization and automation",
+        "B. Containers lower costs, but add time",
+        "C. Containers are more expensive but save time during deployment",
+        "D. Containers save both time and money and improve utilization",
+      ],
     },
     {
       id: 3,
-      text: "What database is used?",
-      options: ["A. MongoDB", "B. PostgreSQL", "C. MySQL", "D. SQLite"],
+      text: "3. You have a Docker container named 'database' running a database server. You want to view all the mapped ports for this container. Which command should you use?",
+      options: [
+        "A. docker port database",
+        "B. docker port database all",
+        "C. docker port database 0.0.0.0",
+        "D. docker port database *",
+      ],
     },
     {
       id: 4,
-      text: "What is Prisma?",
-      options: ["A. ORM", "B. Database", "C. Server", "D. Frontend"],
+      text: "4. What is the purpose of the VOLUME instruction in a Dockerfile?",
+      options: [
+        "A. To specify the ports on which a container listens for connections",
+        "B. To add metadata and annotations to the Docker image",
+        "C. To expose any database storage area or user-serviceable parts of the image",
+        "D. To set the working directory for commands executed during the Docker build process",
+      ],
     },
   ];
 
