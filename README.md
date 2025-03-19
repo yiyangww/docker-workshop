@@ -1,4 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Quiz App
+
+A simple quiz application built with Next.js, Prisma, and PostgreSQL.
+
+## Prerequisites
+
+- Docker and Docker Compose
+- Node.js (for local development)
+
+## Getting Started
+
+1. Clone the repository:
+
+```bash
+git clone <repository-url>
+cd quiz
+```
+
+2. Start the Docker containers:
+
+```bash
+docker-compose up -d
+```
+
+3. Run Prisma migrations to create the database tables:
+
+```bash
+docker exec -it quiz-app npx prisma migrate dev --name init
+```
+
+4. The application should now be running at http://localhost:3000
+
+## Viewing the Database
+
+You can view the database contents using Prisma Studio:
+
+```bash
+docker exec -it quiz-app npx prisma studio --port 5555
+```
+
+Then open http://localhost:5555 in your browser.
+
+Alternatively, you can use psql to view the database:
+
+```bash
+docker exec -it quiz-db psql -U postgres -d quizdb
+```
+
+## Development
+
+The application uses:
+
+- Next.js for the frontend and API routes
+- Prisma as the ORM
+- PostgreSQL as the database
+- Docker for containerization
+
+## Project Structure
+
+- `src/pages/` - Next.js pages and API routes
+- `prisma/` - Prisma schema and migrations
+- `public/` - Static assets
 
 ## Getting Started
 
