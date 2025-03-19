@@ -1,18 +1,20 @@
-# Use official Node.js image
+# Choose an appropriate base Node.js image
 FROM node:18
 
-# Set working directory
+# Set the working directory for the application
 WORKDIR /app
 
-# Copy package files and install dependencies
-COPY package.json package-lock.json ./
-RUN npm install
+# TODO: Copy package files for dependency installation
+COPY 
 
-# Copy project files
-COPY . .
+# TODO: Install npm dependencies
+RUN 
 
-# Expose port
-EXPOSE 3000
+# TODO: Copy all project files from current directory to container
+COPY 
 
-# Start Next.js app
-CMD ["npm", "run", "dev"]
+# TODO: Specify which port needs to be exposed
+EXPOSE 
+
+# TODO: Add the command to start the Next.js application
+CMD 

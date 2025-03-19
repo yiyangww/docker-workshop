@@ -2,29 +2,38 @@ version: "3.8"
 
 services:
   db:
+    # Specify the PostgreSQL image version
     image: postgres:13
     container_name: quiz-db
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: quizdb
+      # TODO: Set the PostgreSQL environment variables (user, password, database name)
+      POSTGRES_USER: 
+      POSTGRES_PASSWORD: 
+      POSTGRES_DB: 
+    # Map the host port to container port for PostgreSQL
     ports:
       - "5432:5432"
+    # Set up a volume to persist database data
     volumes:
       - pgdata:/var/lib/postgresql/data
 
   app:
+    # Specify how to build the app service
     build: .
     container_name: quiz-app
     restart: always
+    # TODO: Add service dependency
     depends_on:
-      - db
+      - 
+    # TODO: Map the host ports to container ports, one for frontend and one for prisma studio
     ports:
-      - "3000:3000"
-      - "5555:5555"
+      - 
+      - 
+    # TODO: Set up the database connection URL
     environment:
-      - DATABASE_URL=postgresql://postgres:password@db:5432/quizdb
+      - DATABASE_URL=
 
+# Define the volume for PostgreSQL data
 volumes:
   pgdata:
