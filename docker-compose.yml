@@ -37,12 +37,6 @@ services:
       - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-quizdb}?schema=public
     networks:
       - quiz-network
-    command: >
-      sh -c "
-        npx prisma migrate deploy &&
-        npx prisma generate &&
-        npm start
-      "
 
 networks:
   quiz-network:
