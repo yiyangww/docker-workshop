@@ -6,25 +6,47 @@ services:
     container_name: quiz-db
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: quizdb
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-quizdb}
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - quiz-network
 
   app:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     container_name: quiz-app
     restart: always
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "3000:3000"
-      - "5555:5555"
     environment:
-      - DATABASE_URL=postgresql://postgres:password@db:5432/quizdb
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-quizdb}?schema=public
+    networks:
+      - quiz-network
+    command: >
+      sh -c "
+        npx prisma migrate deploy &&
+        npx prisma generate &&
+        npm start
+      "
+
+networks:
+  quiz-network:
+    driver: bridge
 
 volumes:
   pgdata:
