@@ -35,9 +35,10 @@ COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 EXPOSE 3000
 
 # Create start script
-RUN echo '#!/bin/sh\n\
-    npx prisma migrate deploy\n\
-    npm start' > start.sh && chmod +x start.sh
+RUN echo '#!/bin/sh' > /app/start.sh && \
+    echo 'npx prisma migrate deploy' >> /app/start.sh && \
+    echo 'npm start' >> /app/start.sh && \
+    chmod +x /app/start.sh
 
 # Start the application
-CMD ["./start.sh"]
+CMD ["/app/start.sh"]
