@@ -19,17 +19,17 @@ RUN npm run build
 FROM node:20-alpine AS runner
 WORKDIR /app
 
-ENV NODE_ENV=production
-
-# Copy package files and install production dependencies
-COPY --from=builder /app/package*.json ./
-RUN npm install --only=production
-
 # Copy built assets and necessary files
+COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+
+ENV NODE_ENV=production
+
+# install production dependencies
+RUN npm install --only=production
 
 # Expose the port
 EXPOSE 3000
