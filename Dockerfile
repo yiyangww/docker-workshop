@@ -20,28 +20,24 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV PORT=3000
 
-# Install production dependencies
-COPY package*.json ./
-RUN npm install --production
+# Copy package files and install production dependencies
+COPY --from=builder /app/package*.json ./
+RUN npm install --only=production
 
-# Copy built assets
+# Copy built assets and necessary files
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/prisma ./prisma
-
-# Create start script
-RUN echo '#!/bin/sh' > start.sh && \
-    echo 'npx prisma migrate deploy' >> start.sh && \
-    echo 'npx prisma generate' >> start.sh && \
-    echo 'npm start' >> start.sh && \
-    chmod +x start.sh
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
 # Expose the port
 EXPOSE 3000
 
+# Create start script
+RUN echo '#!/bin/sh\n\
+    npx prisma migrate deploy\n\
+    npm start' > start.sh && chmod +x start.sh
+
 # Start the application
-CMD ["/bin/sh", "./start.sh"]
+CMD ["./start.sh"]
