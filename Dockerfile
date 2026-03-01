@@ -24,21 +24,12 @@ COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-
 ENV NODE_ENV=production
 
-# install production dependencies
-RUN npm install --only=production
+# Install all deps (prisma CLI needed for migrate at startup), generate client
+RUN npm install && npx prisma generate
 
 # Expose the port
 EXPOSE 3000
 
-# Create start script
-RUN echo '#!/bin/sh' > /app/start.sh && \
-    echo 'npx prisma migrate deploy' >> /app/start.sh && \
-    echo 'npm start' >> /app/start.sh && \
-    chmod +x /app/start.sh
-
-# Start the application
-CMD ["/app/start.sh"]
+CMD ["sh", "-c", "npx prisma migrate deploy && npm start"]

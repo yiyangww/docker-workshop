@@ -13,19 +13,7 @@ cd quiz
 docker-compose up -d
 ```
 
-3. generating the Prisma client
-
-```bash
-docker exec -it quiz-app npx prisma generate
-```
-
-4. restart
-
-```bash
-docker restart quiz-app
-```
-
-5. The application should now be running at http://localhost:3000
+3. The application should now be running at http://localhost:3000
 
 ## Viewing the Database
 
