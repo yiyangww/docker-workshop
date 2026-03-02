@@ -1,0 +1,48 @@
+name: Deployment Check
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  check-deployment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Ensure submission.txt exists
+        run: |
+          if [ ! -f submission.txt ]; then
+            echo "submission.txt not found"
+            exit 1
+          fi
+
+      - name: Read URL
+        id: read_url
+        run: |
+          URL=$(cat submission.txt | tr -d '\n')
+          echo "URL=$URL" >> $GITHUB_ENV
+          echo "Submitted URL: $URL"
+
+      - name: Validate URL format
+        run: |
+          if [[ ! "$URL" =~ ^https?:// ]]; then
+            echo "Invalid URL format"
+            exit 1
+          fi
+
+      - name: Curl check
+        run: |
+          STATUS=$(curl -o /dev/null -s -w "%{http_code}" "$URL")
+          echo "HTTP Status: $STATUS"
+
+          if [ "$STATUS" -ne 200 ]; then
+            echo "Deployment not reachable (status $STATUS)"
+            exit 1
+          fi
+
+      - name: Success
+        run: echo "Deployment reachable. Test passed."
